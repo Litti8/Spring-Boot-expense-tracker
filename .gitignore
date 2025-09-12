@@ -1,0 +1,135 @@
+#HELP.md
+#target/
+#.mvn/wrapper/maven-wrapper.jar
+#!**/src/main/**/target/
+#!**/src/test/**/target/
+#
+#### STS ###
+#.apt_generated
+#.classpath
+#.factorypath
+#.project
+#.settings
+#.springBeans
+#.sts4-cache
+#
+#### IntelliJ IDEA ###
+#.idea
+#*.iws
+#*.iml
+#*.ipr
+#
+#### NetBeans ###
+#/nbproject/private/
+#/nbbuild/
+#/dist/
+#/nbdist/
+#/.nb-gradle/
+#build/
+#!**/src/main/**/build/
+#!**/src/test/**/build/
+#
+#### VS Code ###
+#.vscode/
+
+##########################
+# DATOS SENSIBLES - NUNCA COMMITEAR
+##########################
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-local.properties
+application-secret.yml
+**/secrets/
+**/private/
+*.pem
+*.key
+*.p12
+*.jks
+keystore.*
+
+##########################
+# Configuraciones sensibles
+##########################
+src/main/resources/application-prod.yml
+src/main/resources/application-production.yml
+config/prod/
+config/production/
+
+##########################
+# Java/Maven
+##########################
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+##########################
+# IDEs
+##########################
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.metadata/
+.factorypath
+
+##########################
+# OS
+##########################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+##########################
+# Aplicación específica
+##########################
+uploads/
+logs/
+temp/
+*.db
+*.sqlite
+*.mv.db
+*.trace.db
+
+##########################
+# Docker
+##########################
+.docker/
+docker-compose.override.yml
+docker-compose.prod.yml
+
+##########################
+# Backup files
+##########################
+*.bak
+*.backup
+*.old
+*.orig
