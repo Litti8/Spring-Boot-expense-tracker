@@ -1,0 +1,126 @@
+# application.yml - Configuración BASE (sin secretos)
+spring:
+  application:
+    name: expense-tracker
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false  # default, overridden in profiles
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Multipart file upload
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:5MB}
+      max-request-size: ${MAX_FILE_SIZE:5MB}
+
+# Management endpoints (Actuator)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Server configuration
+server:
+  port: 8080
+  error:
+    include-stacktrace: never  # no expose stacktrace in production
+
+---
+# =================================
+# DEVELOPMENT PROFILE
+# =================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:h2:mem:expense_tracker_dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false  # only localhost access
+
+  jpa:
+    show-sql: true  # OK show SQL in development
+
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# JWT Configuration for development
+jwt:
+  secret: ${JWT_SECRET:defaultDevSecretThatShouldBeReplacedInProduction123456789}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+# File upload for development
+file:
+  upload-dir: ${FILE_UPLOAD_DIR:./uploads}
+
+# Logging for development
+logging:
+  level:
+    com.expensetracker: DEBUG
+    org.springframework.security: DEBUG
+
+---
+# =================================
+# PRODUCTION PROFILE
+# =================================
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# JWT Configuration - Should be set via environment variables in production
+jwt:
+  secret: ${JWT_SECRET}  # No default, must be set in env
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+# File upload for production
+file:
+  upload-dir: ${FILE_UPLOAD_DIR:/app/uploads}
+
+# Logging for production
+logging:
+  level:
+    com.expensetracker: INFO
+    org.springframework.security: WARN
+  file:
+    name: ${LOG_FILE_PATH:./logs/application.log}
