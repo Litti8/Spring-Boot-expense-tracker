@@ -1,5 +1,6 @@
 package com.expensetracker.service;
 
+import com.expensetracker.dto.request.RegisterRequest;
 import com.expensetracker.entity.Role;
 import com.expensetracker.entity.User;
 import com.expensetracker.repository.UserRepository;
@@ -19,14 +20,21 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(User user) {
+    public User registerUser(RegisterRequest registerRequest) {
         // Check if user with the same email already exists
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email is already in use");
         }
 
+        // Create and set a new User
+        User user = new User();
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
+        user.setEmail(registerRequest.getEmail());
+
+
         // Encode the password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         // Set default role to USER
         user.setRole(Role.USER);
