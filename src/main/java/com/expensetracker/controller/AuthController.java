@@ -1,6 +1,8 @@
 package com.expensetracker.controller;
 
+import com.expensetracker.dto.request.LoginRequest;
 import com.expensetracker.dto.request.RegisterRequest;
+import com.expensetracker.dto.response.AuthResponse;
 import com.expensetracker.entity.User;
 import com.expensetracker.service.AuthService;
 import jakarta.validation.Valid;
@@ -37,5 +39,16 @@ public class AuthController {
 
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticatedUser(
+            @Valid
+            @RequestBody
+            LoginRequest loginRequest) {
+
+        String jwt = authService.loginUser(loginRequest);
+        return ResponseEntity.ok(
+                new AuthResponse(jwt));
     }
 }
